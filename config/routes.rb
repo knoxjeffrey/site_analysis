@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users, :path => ''
 
-  resources :projects, only: [:new, :create]
+  resources :projects, only: [:new, :create, :show]
 
-  root 'projects#index'
+  root 'user_projects#index'
 end
