@@ -1,0 +1,7 @@
+h1 Projects
+ul
+  - @user_projects.each do |user_project|
+    li = link_to user_project.project.project_name, project_path(user_project.project)
+
+= link_to "Create New Project", new_project_path,  remote: true
+#new_project

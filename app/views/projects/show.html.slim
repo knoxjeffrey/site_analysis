@@ -1,0 +1,8 @@
+h1 = @project.project_name
+
+h2
+  ' Enter address to run Google Page Speed
+
+= bootstrap_form_tag do |f|
+  = f.text_field :site_address, autofocus: true
+  = f.submit "Run Analysis"
