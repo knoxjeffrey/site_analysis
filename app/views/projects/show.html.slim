@@ -1,8 +1,1 @@
-h1 = @project.project_name
-
-h2
-  ' Enter address to run Google Page Speed
-
-= bootstrap_form_tag do |f|
-  = f.text_field :site_address, autofocus: true
-  = f.submit "Run Analysis"
+= link_to "New Page Analysis", run_page_speed_test_project_path, class: "btn btn-default"

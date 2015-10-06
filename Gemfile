@@ -30,6 +30,7 @@ gem 'slim-rails'
 gem 'bootstrap_form'
 gem 'figaro'
 gem 'devise'
+gem 'faraday'
 
 group :development, :test do
   gem 'byebug'
