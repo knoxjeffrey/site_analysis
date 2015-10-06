@@ -1,0 +1,9 @@
+h1 = @project.project_name
+
+h2
+  ' Enter address to run Google Page Speed
+
+= bootstrap_form_for @page_speed_form, url: run_page_speed_test_project_path, method: :post do |f|
+  = f.text_field :site_address, autofocus: true
+  = f.collection_check_boxes :strategy, PageSpeedForm.strategy_types, :downcase, :downcase, label: 'Select analysis type'
+  = f.submit "Run Analysis"
