@@ -1,6 +1,6 @@
 require_dependency "google_page_speed_api/client"
 
-class PageSpeedOverviewsController < AuthenticatesController
+class PageSpeedResultsController < AuthenticatesController
 
   def new
     @project = Project.find(params[:id])
@@ -55,7 +55,7 @@ class PageSpeedOverviewsController < AuthenticatesController
 
   def store_results(site_analysis_array)
     project_id = @project.id
-    PageSpeedOverview.store_overview_data(site_analysis_array, project_id)
+    PageSpeedResult.store_overview_data(site_analysis_array, project_id)
   end
 
 end
