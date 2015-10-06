@@ -6,8 +6,7 @@ module GooglePageSpeedAPI
   class Error < StandardError; end
   class RequestFailure < Error; end
 
-  PageSpeedOverview = Struct.new(:site_address, :strategy, :speed, :usability)
-  PageSpeedStats = Struct.new(:stats)
+  PageSpeedResults = Struct.new(:site_address, :strategy, :speed, :usability, :stats, :insights)
 
   class Client
 
@@ -23,26 +22,21 @@ module GooglePageSpeedAPI
 
       strategy_type.each do |strategy|
 
-        individual_strategy_results = []
-
         url = "#{page_speed}?url=#{website}&strategy=#{strategy}&key=#{api_key}"
 
         response = connection.get url
         site_analysis = response.body
 
-        page_speed_overview = PageSpeedOverview.new(
+        page_speed_results = PageSpeedResults.new(
           site_analysis["id"],
           strategy,
           site_analysis["ruleGroups"]["SPEED"]["score"],
-          site_analysis["ruleGroups"]["USABILITY"]["score"]
+          strategy == "mobile" ? site_analysis["ruleGroups"]["USABILITY"]["score"] : nil,
+          site_analysis["pageStats"],
+          site_analysis["formattedResults"]["ruleResults"]
         )
 
-        page_speed_stats = PageSpeedStats.new(site_analysis["pageStats"])
-
-        individual_strategy_results << page_speed_overview
-        individual_strategy_results << page_speed_stats
-
-        all_strategy_results << individual_strategy_results
+        all_strategy_results << page_speed_results
       end
 
       all_strategy_results

@@ -8,12 +8,12 @@ class PageSpeedOverviewsController < AuthenticatesController
   end
 
   def create
-    clean_up_strategy_params_array
+    clean_up_strategy_params_array # remove empty string at start
+    @project = Project.find(params[:id])
     @page_speed_form = PageSpeedForm.new(page_speed_form_params)
 
     is_form_valid?
   rescue GooglePageSpeedAPI::RequestFailure => e
-    @project = Project.find(params[:id])
     flash[:alert] = e.message
     render :new
   end
@@ -31,12 +31,12 @@ class PageSpeedOverviewsController < AuthenticatesController
   def is_form_valid?
     if @page_speed_form.valid?
       site_analysis_array = page_speed_api_client.create_page_speed_insight(web_address, strategies_selected)
+      store_results(site_analysis_array)
 
       flash[:notice] = "Analysis is complete"
 
       redirect_to root_path
     else
-      @project = Project.find(params[:id])
       render :new
     end
   end
@@ -51,6 +51,11 @@ class PageSpeedOverviewsController < AuthenticatesController
 
   def strategies_selected
     params[:page_speed_form][:strategy]
+  end
+
+  def store_results(site_analysis_array)
+    project_id = @project.id
+    PageSpeedOverview.store_overview_data(site_analysis_array, project_id)
   end
 
 end
