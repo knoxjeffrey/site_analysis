@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151002152440) do
+ActiveRecord::Schema.define(version: 20151007083931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "page_speed_results", force: :cascade do |t|
+    t.integer  "project_id"
+    t.string   "address"
+    t.string   "strategy"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.jsonb    "stats"
+    t.jsonb    "insights"
+    t.jsonb    "problems"
+    t.jsonb    "rule_groups"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.integer  "admin_id"
